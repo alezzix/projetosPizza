@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Pizzaria Delivery</title>
+
+</h:head>
+
+<h:body>
+
+	<h:form id="formSelectSabores">
+		<p:messages id="messages" autoUpdate="true" closable="true" />
+		<p:panel>
+			<h2 style="margin-top: 0">Sabores (selecione até 4):</h2>
+			<p:pickList id="pickList" value="#{siteController.dualListaSabores}"
+				var="sabores" itemLabel="#{sabores}" itemValue="#{sabores}"
+				required="true" converter="pizzaPrimeFacesPickListConverter"
+				requiredMessage="Escolha o(s) sabor(es)" />
+
+			<p:commandButton
+				onclick="return confirm('Confirma inclusão da pizza?')"
+				id="saboresSubmit" value="Adicionar Pizza"
+				action="#{siteController.adicionarPizza()}" style="margin-top:5px"
+				update="formTotal:panelTotal" />
+		</p:panel>
+
+	</h:form>
+
+</h:body>
+
+</html>

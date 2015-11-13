@@ -1,0 +1,154 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Pizzaria Delivery</title>
+
+</h:head>
+
+<h:body>
+
+	<h:form id="formSelectSabores">
+		<p:messages id="messages" autoUpdate="true" closable="true" />
+		<p:panel>
+			<h2 style="margin-top: 0">Sabores (selecione até 4):</h2>
+			<p:pickList id="pickList" value="#{siteController.dualListaSabores}"
+				var="sabores" itemLabel="#{sabores}" itemValue="#{sabores}"
+				required="true" converter="pizzaPrimeFacesPickListConverter"
+				requiredMessage="Escolha o(s) sabor(es)" />
+
+			<p:commandButton
+				onclick="return confirm('Confirma inclusão da pizza?')"
+				id="saboresSubmit" value="Adicionar Pizza"
+				action="#{siteController.adicionarPizza()}" style="margin-top:5px"
+				update="formTotal:panelTotal" />
+		</p:panel>
+
+	</h:form>
+
+	<h:form id="formSelectBeb">
+		<p:panel>
+			<h2 style="margin-top: 0">Bebidas(informe a quantidade após
+				adicionar):</h2>
+			<p:pickList id="pickListBeb"
+				value="#{siteController.dualListaBebidas}" var="bebidas"
+				itemLabel="#{bebidas}" itemValue="#{bebidas}" required="true"
+				converter="bebidaPrimeFacesPickListConverter"
+				requiredMessage="Escolha a(s) bebida(s)" />
+			<p:commandButton
+				onclick="return confirm('Confirma inclusão da bebida?')"
+				id="bebidasSubmit" value="Adicionar Bebida"
+				action="#{siteController.adicionarBebida()}" style="margin-top:5px"
+				update="formTotal:panelTotal" />
+		</p:panel>
+	</h:form>
+
+
+	<h:form id="formSelectSob">
+		<p:panel>
+			<h2 style="margin-top: 0">Sobremesas(informe a quantidade após
+				adicionar):</h2>
+			<p:pickList id="pickListSob"
+				value="#{siteController.dualListaSobremesas}" var="sobremesas"
+				itemLabel="#{sobremesas}" itemValue="#{sobremesas}" required="true"
+				converter="sobremPrimeFacesPickListConverter"
+				requiredMessage="Escolha a(s) sobremesa(s)" />
+
+			<p:commandButton
+				onclick="return confirm('Confirma inclusão da sobremesa?')"
+				id="sobrSubmit" value="Adicionar Sobremesa"
+				action="#{siteController.adicionarSobremesa()}"
+				style="margin-top:5px" update="formTotal:panelTotal" />
+		</p:panel>
+	</h:form>
+
+	<h:form id="formTotal">
+		<p:panel id="panelTotal">
+			<h:panelGroup id="pTot">
+				<h2 style="margin-top: 0">
+					Total:
+					<h:outputText value="R$#{siteController.total}" />
+				</h2>
+				
+			<p:commandButton
+				onclick="return confirm('Confirma fechamento do pedido?')"
+				id="fecha" value="Fechar Pedido"
+				action="#{siteController.fecharPedido()}" />
+			</h:panelGroup>
+
+				
+				<br />
+
+			<p:dataTable var="entry" value="#{siteController.entriesMap}"
+				emptyMessage="Nenhuma pizza adicionada." id="tabTotal">
+				<p:column headerText="id da Pizza" style="width:10%;">
+					<h:outputText value="#{entry.key}" />
+				</p:column>
+				<p:column headerText="Sabores">
+					<h:outputText value="#{entry.value}" />
+				</p:column>
+				<p:column style="width:10%;">
+					<p:commandButton
+						onclick="return confirm('Confirma exclusao da pizza?')"
+						id="exclui" value="Excluir"
+						action="#{siteController.excluirPizza(entry)}" update="tabTotal" />
+				</p:column>
+			</p:dataTable>
+
+
+
+			<p:dataTable var="beb"
+				value="#{siteController.listaBebidasSelecionadas}"
+				emptyMessage="Nenhuma bebida adicionada." id="tabBeb">
+				<p:column headerText="Bebida" style="width:10%;">
+					<h:outputText value="#{beb.nome}" />
+				</p:column>
+				<p:column headerText="Valor">
+					<h:outputText value="R$#{beb.preco}" />
+				</p:column>
+				<p:column headerText="Quantidade" style="width:25%;">
+					<h:inputText value="#{beb.quantidade}" size="3" />
+					<p:commandLink value="Atualizar Total"
+						action="#{siteController.atualizaTotal()}" update="formTotal:pTot" />
+				</p:column>
+				<p:column style="width:10%;">
+					<p:commandButton
+						onclick="return confirm('Confirma exclusao da bebida?')"
+						id="excluiBeb" value="Excluir"
+						action="#{siteController.excluirBebida(beb)}" update="tabBeb" />
+				</p:column>
+			</p:dataTable>
+
+
+			<p:dataTable var="sob"
+				value="#{siteController.listaSobremesasSelecionadas}"
+				emptyMessage="Nenhuma sobremesa adicionada." id="tabsob">
+				<p:column headerText="Sobremesa" style="width:10%;">
+					<h:outputText value="#{sob.nome}" />
+				</p:column>
+				<p:column headerText="Valor">
+					<h:outputText value="R$#{sob.preco}" />
+				</p:column>
+				<p:column headerText="Quantidade" style="width:25%;">
+					<h:inputText value="#{sob.quantidade}" size="3" />
+					<p:commandLink value="Atualizar Total"
+						action="#{siteController.atualizaTotal()}" update="formTotal:pTot" />
+				</p:column>
+				<p:column style="width:10%;">
+					<p:commandButton
+						onclick="return confirm('Confirma exclusao da sobremesa?')"
+						id="excluiSob" value="Excluir"
+						action="#{siteController.excluirSobremesa(sob)}" update="tabsob" />
+				</p:column>
+			</p:dataTable>
+		</p:panel>
+
+	</h:form>
+
+</h:body>
+
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Pizzaria Delivery</title>
+
+</h:head>
+
+<h:body>
+
+	<h:form id="formPedidos">
+		<p:messages id="messages" autoUpdate="true" closable="true" />
+		<p:panel>
+			<h2 style="margin-top: 0">Pedidos</h2>
+				<p:dataTable var="ped" style="width:70%;"
+				value="#{pedidosController.listaPedidos}"
+				emptyMessage="Nenhuma pedido." id="tabPed">
+				<p:column headerText="IdPedido">
+					<h:outputText value="#{ped.idPedido}" />
+				</p:column>
+				<p:column headerText="Total">
+					<h:outputText value="#{ped.totalPedido}" />
+				</p:column>
+				<p:column headerText="Status">
+					<h:outputText value="#{ped.status}" />
+				</p:column>
+				
+				<p:column>
+					<p:commandButton
+						onclick="return confirm('Confirma?')"
+						id="excluiBeb" value="Finalizar"
+						action="#{pedidosController.finalizar(ped)}" update="tabPed" />
+				</p:column>
+			</p:dataTable>
+		</p:panel>
+
+	</h:form>
+
+</h:body>
+
+</html>
